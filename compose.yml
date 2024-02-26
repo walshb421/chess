@@ -1,7 +1,16 @@
 services:
-  gui:
-    build: .
+  vite:
+    build: 
+      context: .
+      target: vite
     volumes:
       - ./src:/usr/src/app/src
     ports:
       - 8080:5173
+
+  engine:
+    build: 
+      context: .
+      target: engine
+    volumes:
+      - ./engine:/usr/src/app

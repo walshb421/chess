@@ -1,4 +1,4 @@
-FROM node:20 
+FROM node:20 as vite 
 
 WORKDIR /usr/src/app
 
@@ -13,3 +13,14 @@ COPY src src
 
 CMD npm run dev
 
+FROM python:3 as engine
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY engine/ ./
+
+CMD [ "python", "./app.py" ]
