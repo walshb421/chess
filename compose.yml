@@ -1,0 +1,7 @@
+services:
+  gui:
+    build: .
+    volumes:
+      - ./src:/usr/src/app/src
+    ports:
+      - 8080:5173
