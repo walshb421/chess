@@ -1,29 +1,24 @@
-# example-chess-app
+# Example Chess Application
 
-This template should help get you started developing with Vue 3 in Vite.
+## Development 
 
-## Recommended IDE Setup
+You will need to install Docker and the docker-compose standalone script to run the docker env. 
+Otherwise you will need a compatible NodeJS and Python environment. 
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+To build the application run:
+```bash
+docker-compose build
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+To run the application run:
+```bash
+docker-compose up 
 ```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
+Additionally, you can build and run the application in the background.
+```bash
+docker-compose up --build -d
 ```
+
+After running you can open your browser to [localhost:8080](http://localhost:8080)
