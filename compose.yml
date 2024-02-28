@@ -4,6 +4,8 @@ services:
       context: .
       target: vite
     volumes:
+      - ./package.json:/usr/src/app/package.json
+      - ./package-lock.json:/usr/src/app/package-lock.json
       - ./src:/usr/src/app/src
     ports:
       - 8080:5173
@@ -14,3 +16,6 @@ services:
       target: engine
     volumes:
       - ./engine:/usr/src/app
+    ports:
+      - 9090:8765
+    command: python ./websocket.py
