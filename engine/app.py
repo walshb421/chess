@@ -8,7 +8,7 @@ async def main(websocket):
     board = ChessBoard()
     board.create_starting_board()    
 
-    await websocket.send(board.board_to_json())
+    await websocket.send(board.game_to_json())
 
     # Runs everytime client sends data
     async for move in websocket:
@@ -18,9 +18,10 @@ async def main(websocket):
         endMove = moves[2]
 
         # Do move and update board
-        board.move_piece(startMove, endMove)
-
-        # Send resulting board state
-        await websocket.send(board.board_to_json())
+        if(board.can_move_piece(startMove, endMove)):
+            board.move_piece(startMove, endMove)
+            
+            # Send resulting board/game state
+            await websocket.send(board.game_to_json())            
 
 asyncio.run(server(main))
