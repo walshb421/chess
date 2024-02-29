@@ -18,7 +18,13 @@ docker-compose up
 
 Additionally, you can build and run the application in the background.
 ```bash
-docker-compose up --build -d
+    docker-compose up --build -d
+```
+
+
+You can stop the development server by running:
+```bash
+docker-compose down
 ```
 
 After running you can open your browser to [localhost:8080](http://localhost:8080)
