@@ -18,4 +18,4 @@ services:
       - ./engine:/usr/src/app
     ports:
       - 9090:8765
-    command: python ./websocket.py
+    command: watchmedo auto-restart --no-restart-on-command-exit  --debounce-interval 3 -p "*.py" -R  python app.py
