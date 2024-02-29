@@ -20,6 +20,7 @@ def main():
             end_pos = input()
             board.move_piece(start_pos, end_pos)
 
+
         elif (user_choice == "2"):
             print("l0ser")
             game_end = True
