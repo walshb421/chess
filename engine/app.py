@@ -1,21 +1,26 @@
 import asyncio
-import re
 from websocket import server
 from board import ChessBoard
 
+# Runs when websocket connection is established
 async def main(websocket):
+    # Initalize the board
+    board = ChessBoard()
+    board.create_starting_board()    
+
+    await websocket.send(board.board_to_json())
+
+    # Runs everytime client sends data
     async for move in websocket:
-
-        # Initalize the board
-        board = ChessBoard()
-        board.create_starting_board()
-
-        # Assuming the game already is started
         # Parse Move
         moves = move.split()
         startMove = moves[0]
         endMove = moves[2]
 
-        await websocket.send(message)
+        # Do move and update board
+        board.move_piece(startMove, endMove)
+
+        # Send resulting board state
+        await websocket.send(board.board_to_json())
 
 asyncio.run(server(main))
