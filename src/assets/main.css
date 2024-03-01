@@ -2,26 +2,55 @@
 
 
 .board {
-  min-width: 805px;
+  width: 860px;
+  height: 860px;
 }
 
 .board-row {
-  display: inline-block;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .board-square {
   height: 100px;
   width: 100px;
-  margin: none;
+}
+
+.board-row-label {
+  width: 30px;
+  height: 100px;
+  line-height: 100px;
+}
+
+.board-column-label {
+  width: 100px;
+  height: 30px;
+}
+
+.board-column-label p,
+.board-row-label p {
+  text-align: center;
+}
+
+.board-square-label {
+  visibility: hidden;
+  text-align: center;
+  line-height: 100px;
+}
+
+.board-square:hover .board-square-label {
+  visibility: visible;
 }
 
 .board-row:nth-child(odd) .board-square:nth-child(odd),
 .board-row:nth-child(even) .board-square:nth-child(even) {
   background-color: #FFFFFF;
+  color: #000000;
 }
 
 .board-row:nth-child(odd) .board-square:nth-child(even),
 .board-row:nth-child(even) .board-square:nth-child(odd) {
   background-color: #000000;
+  color: #FFFFFF;
 }
 
