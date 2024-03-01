@@ -1,6 +1,9 @@
 <script setup>
+
 import { ref, watch } from 'vue';
 import { useWebSocket } from '@vueuse/core'
+import Board from './components/Board.vue';
+
 
 const { status, data, send, open, close } = useWebSocket('ws://localhost:9090')
 
@@ -11,6 +14,10 @@ const chessboard = ref([]);
 const capturedWhite = ref([]);
 const capturedBlack = ref([]);
 
+
+chessboard.value = new Array(8).fill(
+  new Array(8).fill(null)
+);
 
 watch(data, (newData) => {
   // When data changes, update game info
@@ -33,30 +40,17 @@ const sendMove = () => {
 
 <template>
   <h1>Example Chess App</h1>
+  
   <p>Status: {{ status }}</p>
 
-  <!-- Chessboard Representation -->
-  <table class="chessboard">
-    <tr v-for="(row, rowIndex) in chessboard" :key="rowIndex">
-      <!-- Show the row numbers -->
-      <th>{{ 8 - rowIndex }}</th>
-      <td v-for="(cell, cellIndex) in row" :key="cellIndex">
-        {{ cell }}
-      </td>
-    </tr>
-    <tr>
-      <!-- Show the column letters -->
-      <th></th> 
-      <th v-for="colLabel in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']" :key="colLabel">
-        {{ colLabel }}
-      </th>
-    </tr>
-  </table>
+  
   <div>
     <input v-model="startMove" placeholder="Start Move (e.g., e2)">
     <input v-model="endMove" placeholder="End Move (e.g., e6)">
     <button @click="sendMove">Send Move</button>
   </div>
+  
+  <Board :board="chessboard"/>
 
   <!-- Captured Black Pieces -->
   <div class="captured-pieces">
@@ -67,6 +61,7 @@ const sendMove = () => {
         </li>
       </ul>
   </div>
+  
   <!-- Captured White Pieces -->
     <div class="captured-pieces">
       <h2>Captured White Pieces</h2>
