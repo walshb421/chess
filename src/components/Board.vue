@@ -1,7 +1,29 @@
 <script setup>
+import Piece from './Piece.vue';
+
+const props = defineProps(['board']);
 
 const horizontal = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
+
+var indexes = {};
+
+
+for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+       const label = horizontal[i] + vertical[j];
+       indexes[label] = [j, i];
+    }
+}
+
+function getPiece(board, letter, number) {
+    if (board) {
+        var i, j;
+        [i, j] = indexes[letter + number];
+        return board[i][j];
+    }
+}
+
 
 </script>
 <template>
@@ -25,8 +47,9 @@ const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
             <div v-for="letter in horizontal" class="board-square">
 
                 <!-- Logic For Pieces -->
-                <p class="board-square-label">{{ letter + num }}</p>
-                
+                <!-- <p class="board-square-label">{{ letter + num }}</p> -->
+                <Piece :piece="getPiece(props.board, letter, num)"/>
+                               
             </div>
 
             <!-- Row Labels (Numbers)-->
