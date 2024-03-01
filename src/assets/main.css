@@ -1,35 +1,27 @@
 @import './base.css';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+
+.board {
+  min-width: 805px;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+.board-row {
+  display: inline-block;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.board-square {
+  height: 100px;
+  width: 100px;
+  margin: none;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.board-row:nth-child(odd) .board-square:nth-child(odd),
+.board-row:nth-child(even) .board-square:nth-child(even) {
+  background-color: #FFFFFF;
 }
+
+.board-row:nth-child(odd) .board-square:nth-child(even),
+.board-row:nth-child(even) .board-square:nth-child(odd) {
+  background-color: #000000;
+}
+

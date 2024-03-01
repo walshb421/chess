@@ -1,6 +1,9 @@
 <script setup>
+
 import { ref, watch } from 'vue';
 import { useWebSocket } from '@vueuse/core'
+import Board from './components/Board.vue';
+
 
 const { status, data, send, open, close } = useWebSocket('ws://localhost:9090')
 
@@ -33,6 +36,7 @@ const sendMove = () => {
 
 <template>
   <h1>Example Chess App</h1>
+  
   <p>Status: {{ status }}</p>
 
   <!-- Chessboard Representation -->
@@ -76,4 +80,7 @@ const sendMove = () => {
         </li>
       </ul>
     </div>
+
+  
+  <Board />
 </template>
