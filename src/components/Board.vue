@@ -17,11 +17,9 @@ for (let i = 0; i < 8; i++) {
 }
 
 function getPiece(board, letter, number) {
-    if (board) {
-        var i, j;
-        [i, j] = indexes[letter + number];
-        return board[i][j];
-    }
+    var i, j;
+    [i, j] = indexes[letter + number];
+    return board[i][j];
 }
 
 
@@ -47,8 +45,12 @@ function getPiece(board, letter, number) {
             <div v-for="letter in horizontal" class="board-square">
 
                 <!-- Logic For Pieces -->
-                <!-- <p class="board-square-label">{{ letter + num }}</p> -->
-                <Piece :piece="getPiece(props.board, letter, num)"/>
+                <Piece 
+                    v-if="getPiece(props.board, letter, num) != '.'" 
+                    :piece="getPiece(props.board, letter, num)"
+                    class="board-piece"
+                />
+                <p class="board-square-label">{{ letter + num }}</p>
                                
             </div>
 

@@ -33,14 +33,18 @@
   margin-left: 30px
 }
 
-.board-square-label {
-  visibility: hidden;
+.board-square p {
   text-align: center;
   line-height: 100px;
 }
 
+.board-square-label,
+.board-square:hover .board-piece {
+  display: none;
+}
+
 .board-square:hover .board-square-label {
-  visibility: visible;
+  display: block;
 }
 
 .board-row:nth-child(odd) .board-square:nth-child(odd),
