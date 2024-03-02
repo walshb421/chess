@@ -15,6 +15,13 @@ class Piece:
 
 	def validate_Move(end_row, end_col):
 		return True
+	
+	def piece_to_dict(self):
+		return {
+			"type": self.type,
+			"team": self.color
+		}
+
 
 	def __str__(self):
 		return self.type[0]
@@ -46,3 +53,25 @@ class Pawn(Piece):
 		return False
 	def __str__(self):
 		return 'p'
+	
+class Bishop(Piece):
+	def __init__(self, color, position):
+		super().__init__(color, 'Bishop', position)
+
+class King(Piece):
+	def __init__(self, color, position):
+		super().__init__(color, 'King', position)
+
+class Queen(Piece):
+	def __init__(self, color, position):
+		super().__init__(color, 'Queen', position)
+
+class Knight(Piece):
+	def __init__(self, color, position):
+		super().__init__(color, 'Knight', position)
+
+class Rook(Piece):
+	def __init__(self, color, position):
+		super().__init__(color, 'Rook', position)
+		
+		

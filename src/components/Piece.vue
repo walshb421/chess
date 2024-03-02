@@ -1,11 +1,10 @@
 <script setup>
-//const props = defineProps(['type']);
-const type="pawn";
-const team="light";
-
+const props = defineProps(['piece']);
+const type = props.piece.type;
+const team = props.piece.team;
 </script>
 <template>
-<div v-if="type == 'pawn'">
+<div v-if="type == 'Pawn'">
     <svg class="piece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.05 84">
       <g>
         <path 
@@ -36,7 +35,7 @@ const team="light";
     </svg>
 </div>
 
-<div v-else-if="type == 'bishop'">
+<div v-else-if="type == 'Bishop'">
 <svg class="piece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.05 103">
   <g>
     <path 
@@ -70,7 +69,7 @@ const team="light";
 </svg>
 </div>
 
-<div v-else-if="type == 'king'">
+<div v-else-if="type == 'King'">
 <svg class="piece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.05 114">
  
   <g>
@@ -125,7 +124,7 @@ const team="light";
 </svg>
 </div>
 
-<div v-else-if="type == 'queen'">
+<div v-else-if="type == 'Queen'">
 <svg class="piece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.36 106">
   <g>
     <path
@@ -164,7 +163,7 @@ const team="light";
 </svg>
 </div>
 
-<div v-else-if="type == 'knight'">
+<div v-else-if="type == 'Knight'">
 <svg class="piece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50.63 94.78">
   <g>
     <path 
@@ -191,7 +190,7 @@ const team="light";
 </svg>
 </div>
 
-<div v-else-if="type == 'rook'">
+<div v-else-if="type == 'Rook'">
 <svg class="piece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.05 94.52">
   <g>
     <path
@@ -221,5 +220,5 @@ const team="light";
   </g>
 </svg>
 </div>
-<p v-else>{{ type }}</p>
+
 </template>
