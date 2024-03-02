@@ -22,7 +22,7 @@ chessboard.value = new Array(8).fill(
 watch(data, (newData) => {
   // When data changes, update game info
   const parsedData = JSON.parse(newData)
-
+  console.log(parsedData);
   chessboard.value = parsedData.board;
   capturedWhite.value = parsedData.captured_white;
   capturedBlack.value = parsedData.captured_black;
