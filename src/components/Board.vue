@@ -47,7 +47,7 @@ function getPiece(board, letter, number) {
                 <!-- Logic For Pieces -->
                 <Piece 
                     v-if="getPiece(props.board, letter, num) != '.'" 
-                    :piece="getPiece(props.board, letter, num)"
+                    :type="getPiece(props.board, letter, num)"
                     class="board-piece"
                 />
                 <p class="board-square-label">{{ letter + num }}</p>
