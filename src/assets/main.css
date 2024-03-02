@@ -38,6 +38,10 @@
   line-height: 100px;
 }
 
+.board-square.selected {
+  border: 3px solid red;
+}
+
 .board-square-label,
 .board-square:hover .board-piece {
   display: none;

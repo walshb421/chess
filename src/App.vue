@@ -50,7 +50,7 @@ const sendMove = () => {
     <button @click="sendMove">Send Move</button>
   </div>
   
-  <Board :board="chessboard"/>
+  <Board :board="chessboard" v-model:source="startMove" v-model:destination="endMove"/>
 
   <!-- Captured Black Pieces -->
   <div class="captured-pieces">
