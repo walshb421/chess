@@ -14,6 +14,7 @@
 .board-square {
   height: 100px;
   width: 100px;
+    padding-top: 10px;
 }
 
 .board-row-label {
@@ -63,6 +64,16 @@
   color: #FFFFFF;
 }
 
+.pawn {
+    display: block;
+    margin: auto;
+    height: 75px;
+}
+
+.black-piece {
+    fill: #504B43;
+    stroke-width: 0px;
+}
 
 
 @media (max-width: 1200px) {
