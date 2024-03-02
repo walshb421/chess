@@ -106,4 +106,8 @@
   .board-square p {
     line-height: 50px;
   }
+    .piece {
+        margin-top: 5px;
+        height: 40px;
+    }
 }
