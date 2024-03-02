@@ -70,8 +70,13 @@
     height: 75px;
 }
 
-.black-piece {
+.dark {
     fill: #504B43;
+    stroke-width: 0px;
+}
+
+.light {
+    fill: #A2A3BB;
     stroke-width: 0px;
 }
 
