@@ -1,5 +1,5 @@
 # Acts as the board/game 
-from pieces import Pawn
+from pieces import Pawn, Rook, Bishop, Knight, Queen, King
 import json
 
 columns = ["A", "B", "C", "D", "E", "F", "G", "H"]
@@ -17,8 +17,41 @@ class ChessBoard:
 
 		# Create Pawns
 		for column in range(8):
-			board[1][column] = Pawn('black', (1, column))
-			board[6][column] = Pawn('white', (6, column))
+			board[1][column] = Pawn('dark', (1, column))
+			board[6][column] = Pawn('light', (6, column))
+
+		# Create Rooks
+		board[0][0] = Rook('dark', (0, 0))
+		board[0][7] = Rook('dark', (0, 7))
+
+		board[7][0] = Rook('light', (7, 0))
+		board[7][7] = Rook('light', (7, 7))
+
+		# Create Knights
+		board[0][1] = Knight('dark', (0, 1))
+		board[0][6] = Knight('dark', (0, 6))
+
+		board[7][1] = Knight('light', (7, 1))
+		board[7][6] = Knight('light', (7, 6))
+
+		# Create Bishops
+		board[0][2] = Bishop('dark', (0, 2))
+		board[0][5] = Bishop('dark', (0, 5))
+
+		board[7][2] = Bishop('light', (7, 2))
+		board[7][5] = Bishop('light', (7, 5))
+
+		# Create Queens
+		board[0][3] = Queen('dark', (0, 3))
+	
+		board[7][3] = Queen('light', (7, 3))
+
+		# Create Kings
+		board[0][4] = King('dark', (0, 4))
+	
+		board[7][4] = King('light', (7, 4))
+
+		
 		return board
 	
 	# Print board to console
