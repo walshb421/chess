@@ -1,9 +1,15 @@
 <script setup>
+import { ref } from 'vue';
 import Piece from './Piece.vue';
+
+
+const source = defineModel('source');
+const destination = defineModel('destination');
+var counter = 0;
 
 const props = defineProps(['board']);
 
-const horizontal = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const horizontal = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
 var indexes = {};
@@ -20,6 +26,21 @@ function getPiece(board, letter, number) {
     var i, j;
     [i, j] = indexes[letter + number];
     return board[i][j];
+}
+
+function click_board(letter, number) {
+    if(counter == 0 ) {
+        if(getPiece(props.board, letter, number) != '.') {
+            source.value = letter + number;
+            destination.value = null;
+            counter++
+        }
+        
+    }
+    else {
+        destination.value = letter + number;
+        counter = 0;
+    }
 }
 
 
@@ -42,7 +63,12 @@ function getPiece(board, letter, number) {
             </div>
 
             <!-- Core Squares of the Board -->
-            <div v-for="letter in horizontal" class="board-square">
+            <div 
+                v-for="letter in horizontal" 
+                class="board-square"
+                :class="{'selected': source == (letter + num) || destination == (letter + num)}"
+                @click="click_board(letter, num)"
+            >
 
                 <!-- Logic For Pieces -->
                 <Piece 
@@ -67,4 +93,5 @@ function getPiece(board, letter, number) {
             </div>
         </div>
     </div>
+
 </template>
