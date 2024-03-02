@@ -15,6 +15,13 @@ class Piece:
 
 	def validate_Move(end_row, end_col):
 		return True
+	
+	def piece_to_dict(self):
+		return {
+			"type": self.type,
+			"team": self.color
+		}
+
 
 	def __str__(self):
 		return self.type[0]

@@ -16,7 +16,7 @@ const capturedBlack = ref([]);
 
 
 chessboard.value = new Array(8).fill(
-  new Array(8).fill(null)
+  new Array(8).fill(".")
 );
 
 watch(data, (newData) => {

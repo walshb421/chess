@@ -2,6 +2,9 @@
 from pieces import Pawn
 import json
 
+columns = ["A", "B", "C", "D", "E", "F", "G", "H"]
+rows = ["8", "7", "6", "5", "4", "3", "2", "1"]
+
 class ChessBoard:
 	def __init__(self):
 		self.board = self.create_starting_board()
@@ -25,17 +28,27 @@ class ChessBoard:
 
 	# convert 2d array of board state and info to json
 	def game_to_json(self):
-		board_arr = []
-		for row in self.board:
-			row_arr = ['.' if square is None else str(square) for square in row]
-			board_arr.append(row_arr)
+		board_obj = {}
+		#for row in self.board:
+			##row_arr = ['.' if square is None else str(square) for square in row]
+			#board_arr.append(row_arr)
+
+		for i in range(8):
+			for j in range(8):
+				key = columns[j] + rows[i]
+				if self.board[i][j]:
+					board_obj[key] = self.board[i][j].piece_to_dict()
+				else:
+					board_obj[key] = "."
+
+
 
 		captured_white = [str(piece) for piece in self.captured_whites]
 		captured_black = [str(piece) for piece in self.captured_blacks]
 
 		# Create a dictionary to hold all game data
 		game_state = {
-			'board': board_arr,
+			'board': board_obj,
 			'captured_white': captured_white,
 			'captured_black': captured_black
 		}

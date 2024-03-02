@@ -6,21 +6,21 @@ const props = defineProps(['board']);
 const horizontal = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-var indexes = {};
+// var indexes = {};
 
 
-for (let i = 0; i < 8; i++) {
-    for (let j = 0; j < 8; j++) {
-       const label = horizontal[i] + vertical[j];
-       indexes[label] = [j, i];
-    }
-}
+// for (let i = 0; i < 8; i++) {
+//     for (let j = 0; j < 8; j++) {
+//        const label = horizontal[i] + vertical[j];
+//        indexes[label] = [j, i];
+//     }
+// }
 
-function getPiece(board, letter, number) {
-    var i, j;
-    [i, j] = indexes[letter + number];
-    return board[i][j];
-}
+// function getPiece(board, letter, number) {
+//     var i, j;
+//     [i, j] = indexes[letter + number];
+//     return board[i][j];
+// }
 
 
 </script>
@@ -46,8 +46,8 @@ function getPiece(board, letter, number) {
 
                 <!-- Logic For Pieces -->
                 <Piece 
-                    v-if="getPiece(props.board, letter, num) != '.'" 
-                    :piece="getPiece(props.board, letter, num)"
+                    v-if="props.board[letter + num] != '.'" 
+                    :piece="props.board[letter + num]"
                     class="board-piece"
                 />
                 <p class="board-square-label">{{ letter + num }}</p>
