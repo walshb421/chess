@@ -34,6 +34,13 @@ class ChessBoard:
 		#board[7][1] = Knight('light', (7, 1))
 		#board[7][6] = Knight('light', (7, 6))
 
+		# Create Bishops
+		board[0][2] = Bishop('dark', (0, 2))
+		board[0][5] = Bishop('dark', (0, 5))
+
+		board[7][2] = Bishop('light', (7, 2))
+		board[7][5] = Bishop('light', (7, 5))
+
 		# Create Queens
 		#board[0][3] = Queen('dark', (0, 3))
 	

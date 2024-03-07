@@ -54,6 +54,39 @@ class Bishop(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Bishop', position)
 
+	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+		# Ensure the move is within the board limits
+		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
+			return False
+		
+		# Ensure the move is diagonal, abs difference will be equal if diagonal movement
+		if (abs(end_row - start_row) != abs(end_col - start_col)):
+			return False
+		
+		# Figure out where bishop is moving directionally for row and col
+		if (end_row > start_row):
+			row_step = 1
+		else: row_step = -1
+
+		if (end_col > start_col):
+			col_step = 1
+		else: col_step = -1
+
+		# Look for pieces blocking path
+		steps = abs(end_row - start_row) # same in any direction
+		for i in range(1, steps):
+			row = start_row + i * row_step # multiply for direction
+			col = start_col + i * col_step
+			if board[row][col] is not None: # Path is blocked
+				return False
+			
+		# Ensure the destination is not occupied by our own piece
+		if (board[end_row][end_col] is not None and board[end_row][end_col].color == self.color):
+			return False
+		
+		# If we get here, move is valid
+		return True
+
 class King(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'King', position)
