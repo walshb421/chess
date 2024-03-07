@@ -63,6 +63,22 @@
   color: #FFFFFF;
 }
 
+.piece {
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    height: 75px;
+}
+
+.dark {
+    fill: #504B43;
+    stroke-width: 0px;
+}
+
+.light {
+    fill: #A2A3BB;
+    stroke-width: 0px;
+}
 
 
 @media (max-width: 1200px) {
@@ -90,4 +106,8 @@
   .board-square p {
     line-height: 50px;
   }
+    .piece {
+        margin-top: 5px;
+        height: 40px;
+    }
 }

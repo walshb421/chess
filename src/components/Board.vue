@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import Piece from './Piece.vue';
 
 
@@ -12,25 +11,10 @@ const props = defineProps(['board']);
 const horizontal = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-var indexes = {};
-
-
-for (let i = 0; i < 8; i++) {
-    for (let j = 0; j < 8; j++) {
-       const label = horizontal[i] + vertical[j];
-       indexes[label] = [j, i];
-    }
-}
-
-function getPiece(board, letter, number) {
-    var i, j;
-    [i, j] = indexes[letter + number];
-    return board[i][j];
-}
 
 function click_board(letter, number) {
     if(counter == 0 ) {
-        if(getPiece(props.board, letter, number) != '.') {
+        if(props.board[letter + number] != '.') {
             source.value = letter + number;
             destination.value = null;
             counter++
@@ -43,10 +27,9 @@ function click_board(letter, number) {
     }
 }
 
-
 </script>
 <template>
-    <div class="board">
+    <div class="board" v-if="board">
 
         <!-- Column Labels (Letters)-->
         <div class="board-row">
@@ -71,9 +54,9 @@ function click_board(letter, number) {
             >
 
                 <!-- Logic For Pieces -->
-                <Piece 
-                    v-if="getPiece(props.board, letter, num) != '.'" 
-                    :piece="getPiece(props.board, letter, num)"
+                <Piece
+                    v-if="props.board[letter + num] != '.'"
+                    :piece="props.board[letter + num]"
                     class="board-piece"
                 />
                 <p class="board-square-label">{{ letter + num }}</p>

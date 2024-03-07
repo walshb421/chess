@@ -18,10 +18,10 @@ async def main(websocket):
         endMove = moves[2]
 
         # Do move and update board
-        if(board.can_move_piece(startMove, endMove)):
-            board.move_piece(startMove, endMove)
-            
-            # Send resulting board/game state
-            await websocket.send(board.game_to_json())            
+        #if(board.can_move_piece(startMove, endMove)):
+        board.move_piece(startMove, endMove)
+        
+        # Send resulting board/game state
+        await websocket.send(board.game_to_json())            
 
 asyncio.run(server(main))
