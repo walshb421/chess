@@ -71,50 +71,44 @@ class Rook(Piece):
 		super().__init__(color, 'Rook', position)
 	
 	def validate_Move(self, start_row, start_col, end_row, end_col, board):
-		# Check if the move is within bounds of the board
+ 		# Ensure the move is within the board limits
 		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
 			return False
 		
-		# Check if move isn't up down left or right, then it isn't valid
+		# Ensure the move is either horizontal or vertical
 		if (start_col != end_col and start_row != end_row):
-			print("isnt horizontal or vetical", flush=True)
 			return False
 
-		# If we moving vertically, check that all spots are not blocked leading up to ending square
+		# Validate vertical moves
 		if (start_col == end_col):
 			# If we moving down
 			if (start_row < end_row):
-				# Check every spot for a piece blocking the way
 				for row in range(start_row + 1, end_row, 1):
-					# If blocked
-					if board[row][start_col] is not None:
+					if board[row][start_col] is not None: # Path is blocked
 						return False
 			# If we moving up
 			elif (start_row > end_row):
-				# Check spots for blocking pieces
 				for row in range(start_row - 1, end_row, -1):
-					# If blocked
-					if board[row][start_col] is not None:
+					if board[row][start_col] is not None: # path is blocked
 						return False
 					
-		# If we moving horizontally, check that spots leading up aren't blocked
+		# Validate horizontal moves
 		if (start_row == end_row):
 			# If we moving right
 			if (start_col < end_col):
-				# Check if blocked
 				for col in range(start_col + 1, end_col, 1):
-					if board[start_row][col] is not None:
+					if board[start_row][col] is not None: # Path is blocked
 						return False
+			# Moving left
 			elif (start_col > end_col):
-				# Check if blocked
 				for col in range(start_col - 1, end_col, -1):
-					if board[start_row][col] is not None:
+					if board[start_row][col] is not None: # Path is blocked
 						return False
 		
-		# Check if that space has one of our own pieces
+		# Ensure the destination is not occupied by our own piece
 		if (board[end_row][end_col] is not None and board[end_row][end_col].color == self.color):
 			return False
 
-		# If we get here we can move/capture at this space
+		# Move is valid if none of the conditions above are met
 		return True
 		
