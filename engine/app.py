@@ -17,8 +17,9 @@ async def main(websocket):
         startMove = moves[0]
         endMove = moves[2]
 
-        # Do move and update board
+        # Returns true if piece can be moved
         if(board.can_move_piece(startMove, endMove)):
+            # Moves piece and updates board
             board.move_piece(startMove, endMove)
             
         # Send resulting board/game state

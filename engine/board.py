@@ -28,28 +28,28 @@ class ChessBoard:
 		board[7][7] = Rook('light', (7, 7))
 
 		# Create Knights
-		board[0][1] = Knight('dark', (0, 1))
-		board[0][6] = Knight('dark', (0, 6))
+		#board[0][1] = Knight('dark', (0, 1))
+		#board[0][6] = Knight('dark', (0, 6))
 
-		board[7][1] = Knight('light', (7, 1))
-		board[7][6] = Knight('light', (7, 6))
+		#board[7][1] = Knight('light', (7, 1))
+		#board[7][6] = Knight('light', (7, 6))
 
 		# Create Bishops
-		board[0][2] = Bishop('dark', (0, 2))
-		board[0][5] = Bishop('dark', (0, 5))
+		#board[0][2] = Bishop('dark', (0, 2))
+		#board[0][5] = Bishop('dark', (0, 5))
 
-		board[7][2] = Bishop('light', (7, 2))
-		board[7][5] = Bishop('light', (7, 5))
+		#board[7][2] = Bishop('light', (7, 2))
+		#board[7][5] = Bishop('light', (7, 5))
 
 		# Create Queens
-		board[0][3] = Queen('dark', (0, 3))
+		#board[0][3] = Queen('dark', (0, 3))
 	
-		board[7][3] = Queen('light', (7, 3))
+		#board[7][3] = Queen('light', (7, 3))
 
 		# Create Kings
-		board[0][4] = King('dark', (0, 4))
+		#board[0][4] = King('dark', (0, 4))
 	
-		board[7][4] = King('light', (7, 4))
+		#board[7][4] = King('light', (7, 4))
 
 		return board
 	
@@ -103,7 +103,7 @@ class ChessBoard:
 		if self.board[end_row][end_col] is not None:
 			captured_piece = self.board[end_row][end_col]
 			captured_piece.capture()
-
+		
 			if captured_piece.color == 'white':
 				self.captured_whites.append(captured_piece)
 			else:
