@@ -12,9 +12,10 @@ class Game:
     def on_message(self, message):
         if type(message) is dict:
             for key, value in message.items():
-                self.messages[key](value)
+                print("Handling " + key + " ...", flush=True)
+                #self.messages[key](value)
 
-    def on_move(move):
+    def on_move(self, move):
         print(move, flush=True)
         
 	

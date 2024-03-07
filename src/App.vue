@@ -25,7 +25,10 @@ watch(data, (newData) => {
 // method that constructs the move string 
 const sendMove = () => {
   const move = `${startMove.value} to ${endMove.value}`
-  send(move)
+  const message = {
+    "move": move
+  }
+  send(JSON.stringify(message));
   startMove.value = '' // resets value
   endMove.value = '' // reset value
 }

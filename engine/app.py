@@ -1,6 +1,8 @@
 import asyncio
 from websocket import server
 from game import Game
+import json
+
 #from board import ChessBoard
 
 # Runs when websocket connection is established
@@ -14,7 +16,7 @@ async def main(websocket):
 
     # Runs everytime client sends data
     async for message in websocket:
-        game.on_message(message)
+        game.on_message(json.loads(message))
         # Parse Move
         #moves = move.split()
         #startMove = moves[0]
