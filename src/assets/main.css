@@ -1,6 +1,5 @@
 @import './base.css';
 
-
 .board {
   width: 860px;
   height: 860px;
@@ -15,6 +14,11 @@
   height: 100px;
   width: 100px;
 }
+
+.board-row-label p, .board-column-label p {
+    color: var(--bb-black);
+}
+
 
 .board-row-label {
   width: 30px;
@@ -53,14 +57,14 @@
 
 .board-row:nth-child(odd) .board-square:nth-child(odd),
 .board-row:nth-child(even) .board-square:nth-child(even) {
-  background-color: #FFFFFF;
-  color: #000000;
+  background-color: var(--light-square);
+  color: var(--dark-square);
 }
 
 .board-row:nth-child(odd) .board-square:nth-child(even),
 .board-row:nth-child(even) .board-square:nth-child(odd) {
-  background-color: #000000;
-  color: #FFFFFF;
+  background-color: var(--dark-square);
+  color: var(--light-square);
 }
 
 .piece {
@@ -71,12 +75,12 @@
 }
 
 .dark {
-    fill: #504B43;
+    fill: var(--dark-piece);
     stroke-width: 0px;
 }
 
 .light {
-    fill: #A2A3BB;
+    fill: var(--light-piece);
     stroke-width: 0px;
 }
 
