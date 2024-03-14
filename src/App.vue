@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useWebSocket } from '@vueuse/core'
 import Board from './components/Board.vue';
 
@@ -26,12 +26,19 @@ watch(data, (newData) => {
 const sendMove = () => {
   const move = `${startMove.value} to ${endMove.value}`
   const message = {
-    "move": move
+    "move": {
+      source: startMove.value,
+      destination: endMove.value
+    }
   }
   send(JSON.stringify(message));
   startMove.value = '' // resets value
   endMove.value = '' // reset value
 }
+
+onMounted(() => {
+  send(JSON.stringify({"connect": {}}))
+});
 
 </script>
 

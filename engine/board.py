@@ -1,15 +1,19 @@
 # Acts as the board/game 
+from game import Game
 from pieces import Pawn, Rook, Bishop, Knight, Queen, King
 import json
 
 columns = ["a", "b", "c", "d", "e", "f", "g", "h"]
 rows = ["8", "7", "6", "5", "4", "3", "2", "1"]
 
-class ChessBoard:
+class ChessBoard(Game):
 	def __init__(self):
+		super().__init__()
 		self.board = self.create_starting_board()
 		self.captured_whites = []
 		self.captured_blacks = []
+		self.add_callback("move", self.move_piece)
+		self.add_callback("connect", lambda object : self.game_to_json())
 
 	def create_starting_board(self):
 		# Make basic 8x8 board
@@ -94,23 +98,28 @@ class ChessBoard:
 		return False
 
 	# Moves a piece and sees if it has captured anything in the process
-	def move_piece(self, start_pos, end_pos):
-		# Convert chess moves to coordinates
-		start_row, start_col = self.convert_to_index(start_pos)
-		end_row, end_col = self.convert_to_index(end_pos)
+	def move_piece(self, move):
+		start_pos = move['source']
+		end_pos = move['destination']
+		if(self.can_move_piece(start_pos, end_pos)):
+			# Convert chess moves to coordinates
+			start_row, start_col = self.convert_to_index(start_pos)
+			end_row, end_col = self.convert_to_index(end_pos)
 
-		# See if there was a piece there
-		if self.board[end_row][end_col] is not None:
-			captured_piece = self.board[end_row][end_col]
-			captured_piece.capture()
-		
-			if captured_piece.color == 'white':
-				self.captured_whites.append(captured_piece)
-			else:
-				self.captured_blacks.append(captured_piece)
+			# See if there was a piece there
+			if self.board[end_row][end_col] is not None:
+				captured_piece = self.board[end_row][end_col]
+				captured_piece.capture()
 
-		self.board[end_row][end_col] = self.board[start_row][start_col]
-		self.board[start_row][start_col] = None
+				if captured_piece.color == 'white':
+					self.captured_whites.append(captured_piece)
+				else:
+					self.captured_blacks.append(captured_piece)
+
+			self.board[end_row][end_col] = self.board[start_row][start_col]
+			self.board[start_row][start_col] = None
+		return self.game_to_json()
+	
 
 	# we only use chess notation here bruv
 	def convert_to_index(self, position):
