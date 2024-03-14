@@ -1,6 +1,10 @@
 from board import ChessBoard
 import asyncio
-
-game = ChessBoard()
-asyncio.run(game.server())
+if __name__ == "__main__":
+   try:
+        game = ChessBoard()
+        asyncio.run(game.server())
+   except KeyboardInterrupt:
+        print("Reloading Server ... ")
+        pass
 
