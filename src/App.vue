@@ -24,7 +24,6 @@ watch(data, (newData) => {
 
 // method that constructs the move string 
 const sendMove = () => {
-  const move = `${startMove.value} to ${endMove.value}`
   const message = {
     "move": {
       source: startMove.value,
@@ -34,10 +33,16 @@ const sendMove = () => {
   send(JSON.stringify(message));
   startMove.value = '' // resets value
   endMove.value = '' // reset value
+
 }
 
 onMounted(() => {
   send(JSON.stringify({"connect": {}}))
+  window.addEventListener('keydown', (e) => {
+      if (e.key == 'Enter') {
+        sendMove();
+      }
+    });
 });
 
 </script>
