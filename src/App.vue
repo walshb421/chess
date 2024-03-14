@@ -22,6 +22,7 @@ watch(data, (newData) => {
   capturedBlack.value = parsedData.captured_black;
 })
 
+
 // method that constructs the move string 
 const sendMove = () => {
   const message = {
@@ -31,18 +32,19 @@ const sendMove = () => {
     }
   }
   send(JSON.stringify(message));
-  startMove.value = '' // resets value
-  endMove.value = '' // reset value
+  startMove.value = null // resets value
+  endMove.value = null // reset value
 
 }
 
+watch(endMove, (square) => {
+  if(square) {
+    sendMove()
+  }
+})
+
 onMounted(() => {
   send(JSON.stringify({"connect": {}}))
-  window.addEventListener('keydown', (e) => {
-      if (e.key == 'Enter') {
-        sendMove();
-      }
-    });
 });
 
 </script>
