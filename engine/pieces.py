@@ -90,6 +90,22 @@ class Bishop(Piece):
 class King(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'King', position)
+	
+	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+		# Ensure the move is within the board limits
+		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
+			return False
+		
+		# Check if move is more than 1 away from any direction
+		if abs(end_row - start_row) > 1 or abs(end_col - start_col) > 1:
+			return False
+		
+		# Ensure the destination is not occupied by our own piece
+		if (board[end_row][end_col] is not None and board[end_row][end_col].color == self.color):
+			return False
+		
+		# If we get here, move is valid
+		return True
 
 class Queen(Piece):
 	def __init__(self, color, position):
