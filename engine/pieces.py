@@ -182,9 +182,12 @@ class Knight(Piece):
 		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
 			return False
 		
-		
-		# Check if the move is 2 row 1 column move or 2 column row move
-		if not ((abs(end_row - start_row) == 2 and abs(end_col - start_col) == 1) or (abs(end_row - start_row) == 1 and abs(end_col - start_col) == 2)):
+		# Find how far the ending spots are for row and col
+		row_distance = abs(end_row - start_row)
+		col_distance = abs(end_col - start_col)
+
+		# Check if the move is 2 row 1 column move or 2 column row move, which effectively checks all 8 L shape directions
+		if not ((row_distance == 2 and col_distance == 1) or (row_distance == 1 and col_distance == 2)):
 			return False
 		
 		# Ensure the destination is not occupied by our own piece
