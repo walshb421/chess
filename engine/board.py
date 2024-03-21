@@ -32,11 +32,11 @@ class ChessBoard(Game):
 		board[7][7] = Rook('light', (7, 7))
 
 		# Create Knights
-		#board[0][1] = Knight('dark', (0, 1))
-		#board[0][6] = Knight('dark', (0, 6))
+		board[0][1] = Knight('dark', (0, 1))
+		board[0][6] = Knight('dark', (0, 6))
 
-		#board[7][1] = Knight('light', (7, 1))
-		#board[7][6] = Knight('light', (7, 6))
+		board[7][1] = Knight('light', (7, 1))
+		board[7][6] = Knight('light', (7, 6))
 
 		# Create Bishops
 		board[0][2] = Bishop('dark', (0, 2))

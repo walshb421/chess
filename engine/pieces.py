@@ -177,6 +177,28 @@ class Knight(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Knight', position)
 
+	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+ 		# Ensure the move is within the board limits
+		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
+			return False
+		
+		# Find how far the ending spots are for row and col
+		row_distance = abs(end_row - start_row)
+		col_distance = abs(end_col - start_col)
+
+		# Check if the move is 2 row 1 column move or 2 column row move, which effectively checks all 8 L shape directions
+		if not ((row_distance == 2 and col_distance == 1) or (row_distance == 1 and col_distance == 2)):
+			return False
+		
+		# Ensure the destination is not occupied by our own piece
+		if (board[end_row][end_col] is not None and board[end_row][end_col].color == self.color):
+			return False
+
+		# Move is valid if none of the conditions above are met
+		return True
+		
+
+
 class Rook(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Rook', position)
