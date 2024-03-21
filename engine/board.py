@@ -50,9 +50,8 @@ class ChessBoard(Game):
 		board[7][3] = Queen('light', (7, 3))
 
 		# Create Kings
-		#board[0][4] = King('dark', (0, 4))
-	
-		#board[7][4] = King('light', (7, 4))
+		board[0][4] = King('dark', (0, 4))
+		board[7][4] = King('light', (7, 4))
 
 		return board
 	
