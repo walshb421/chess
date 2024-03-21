@@ -54,13 +54,6 @@ onMounted(() => {
   
   <p>Status: {{ status }}</p>
 
-  
-  <div>
-    <input v-model="startMove" placeholder="Start Move (e.g., e2)">
-    <input v-model="endMove" placeholder="End Move (e.g., e6)">
-    <button @click="sendMove">Send Move</button>
-  </div>
-  
   <Board :board="chessboard" v-model:source="startMove" v-model:destination="endMove"/>
 
   <!-- Captured Black Pieces -->
