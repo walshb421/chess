@@ -26,7 +26,7 @@ class Pawn(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Pawn', position)
 
-	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+	def validate_Move(self, start_row, start_col, end_row, end_col, board, moves, turn):
 		# Check if white pawn just moving up one square 
 		if self.color == 'light' and end_row == start_row - 1 and board[end_row][end_col] == None and end_col == start_col:
 			return True
@@ -46,7 +46,12 @@ class Pawn(Piece):
 		elif self.color == 'dark' and end_row == start_row + 1 and board[end_row][end_col] and ((end_col == start_col + 1 and start_col + 1 < 8) or (end_col == start_col - 1 and start_col - 1 > -1)):
 			return True
 
-		#TODO en passant
+		# en passant
+		if (turn > 0):
+			last_move = moves[turn]
+			last_start_pos, last_end_pos = last_move['src'], last_move['dst']
+			last_piece = board[last_end_pos[0]][last_end_pos[1]]
+
 
 		return False
 	
@@ -54,7 +59,7 @@ class Bishop(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Bishop', position)
 
-	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+	def validate_Move(self, start_row, start_col, end_row, end_col, board, moves, turn):
 		# Ensure the move is within the board limits
 		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
 			return False
@@ -91,7 +96,7 @@ class King(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'King', position)
 	
-	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+	def validate_Move(self, start_row, start_col, end_row, end_col, board, moves, turn):
 		# Ensure the move is within the board limits
 		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
 			return False
@@ -111,7 +116,7 @@ class Queen(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Queen', position)
 
-	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+	def validate_Move(self, start_row, start_col, end_row, end_col, board, moves, turn):
 		# Ensure the move is within the board limits
 		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
 			return False
@@ -177,7 +182,7 @@ class Knight(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Knight', position)
 
-	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+	def validate_Move(self, start_row, start_col, end_row, end_col, board, moves, turn):
  		# Ensure the move is within the board limits
 		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
 			return False
@@ -203,7 +208,7 @@ class Rook(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Rook', position)
 	
-	def validate_Move(self, start_row, start_col, end_row, end_col, board):
+	def validate_Move(self, start_row, start_col, end_row, end_col, board, moves, turn):
  		# Ensure the move is within the board limits
 		if not (0 <= end_col and end_col < 8 and 0 <= end_row and end_row < 8):
 			return False

@@ -18,6 +18,7 @@ class ChessBoard(Game):
 		self.turn = -1
 		self.moves = []
 		self.board = self.create_starting_board()
+		self.turn += 1
 		self.captured_whites = []
 		self.captured_blacks = []
 
@@ -99,7 +100,7 @@ class ChessBoard(Game):
 
 		# Validate the move
 		if (self.board[start_row][start_col] != None): # If space to validate isnt None
-			if (self.board[start_row][start_col].validate_Move(start_row, start_col, end_row, end_col, self.board)):
+			if (self.board[start_row][start_col].validate_Move(start_row, start_col, end_row, end_col, self.board, self.moves, self.turn)):
 				return True
 		return False
 
@@ -111,6 +112,13 @@ class ChessBoard(Game):
 			# Convert chess moves to coordinates
 			start_row, start_col = self.convert_to_index(start_pos)
 			end_row, end_col = self.convert_to_index(end_pos)
+
+			# Write history of move
+			move_info = {
+				'src': (start_row, start_col),
+				'dst': (end_row, end_col)
+			}
+			self.record_move(move_info)
 
 			# See if there was a piece there
 			if self.board[end_row][end_col] is not None:

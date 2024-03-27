@@ -13,6 +13,10 @@ class Game:
         self.chats = []
         self.messages = {}
 
+    def record_move(self, move):
+        self.moves[self.turn] = move
+        self.turn += 1
+
     async def server(self):
         async with serve(self.websocket_handler, "0.0.0.0", 8765):
             await asyncio.Future()  # run forever
