@@ -46,13 +46,18 @@ class Pawn(Piece):
 		elif self.color == 'dark' and end_row == start_row + 1 and board[end_row][end_col] and ((end_col == start_col + 1 and start_col + 1 < 8) or (end_col == start_col - 1 and start_col - 1 > -1)):
 			return True
 
-		# en passant
+		# en passant validation
 		if (turn > 0):
-			last_move = moves[turn]
+			last_move = moves[turn - 1] 
 			last_start_pos, last_end_pos = last_move['src'], last_move['dst']
-			last_piece = board[last_end_pos[0]][last_end_pos[1]]
-
-
+			# Check if the last move was made by a pawn moving two squares
+			if abs(last_start_pos[0] - last_end_pos[0]) == 2 and abs(last_start_pos[1] - last_end_pos[1]) == 0:
+				# Check if the current pawn is adjacent to the position the pawn moved to
+				if abs(start_col - last_end_pos[1]) == 1:
+					if self.color == 'light' and start_row == 3 and end_row == 2 and end_col == last_end_pos[1]:
+						return True
+					elif self.color == 'dark' and start_row == 4 and end_row == 5 and end_col == last_end_pos[1]:
+						return True
 		return False
 	
 class Bishop(Piece):

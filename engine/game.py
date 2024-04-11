@@ -14,7 +14,7 @@ class Game:
         self.messages = {}
 
     def record_move(self, move):
-        self.moves[self.turn] = move
+        self.moves.append(move)
         self.turn += 1
 
     async def server(self):
