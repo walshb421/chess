@@ -5,7 +5,7 @@ import { useWebSocket } from '@vueuse/core'
 import Board from './components/Board.vue';
 
 
-const { status, data, send, open, close } = useWebSocket('ws://localhost:9090')
+const { status, data, send, open, close } = useWebSocket('ws://' + window.location.hostname + ':9090');
 
 // Different chess data
 const startMove = ref('');
