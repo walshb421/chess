@@ -9,11 +9,19 @@ rows = ["8", "7", "6", "5", "4", "3", "2", "1"]
 class ChessBoard(Game):
 	def __init__(self):
 		super().__init__()
+		self.reset()
+		self.add_callback("move", self.move_piece)
+		self.add_callback("connect", lambda object : self.game_to_json())
+		self.add_callback("reset", lambda object : self.reset())
+
+	def reset(self):
+		self.turn = -1
+		self.moves = []
 		self.board = self.create_starting_board()
 		self.captured_whites = []
 		self.captured_blacks = []
-		self.add_callback("move", self.move_piece)
-		self.add_callback("connect", lambda object : self.game_to_json())
+
+		return self.game_to_json()
 
 	def create_starting_board(self):
 		# Make basic 8x8 board
