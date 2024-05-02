@@ -37,6 +37,8 @@ const sendMove = () => {
 
 }
 
+const reset = () => send(JSON.stringify({"reset": {}}))
+
 watch(endMove, (square) => {
   if(square) {
     sendMove()
@@ -53,6 +55,8 @@ onMounted(() => {
   <h1>Example Chess App</h1>
   
   <p>Status: {{ status }}</p>
+
+  <button @click="reset">Reset</button>
 
   <Board :board="chessboard" v-model:source="startMove" v-model:destination="endMove"/>
 
