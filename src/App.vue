@@ -3,6 +3,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { useWebSocket } from '@vueuse/core'
 import Board from './components/Board.vue';
+import Splash from '@/components/Splash.vue';
 
 
 const { status, data, send, open, close } = useWebSocket('ws://' + window.location.hostname + ':9090');
@@ -52,31 +53,34 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>Example Chess App</h1>
+  <Splash>
+    
+  </Splash>
+ <!--  <h1>Example Chess App</h1>
   
   <p>Status: {{ status }}</p>
 
   <button @click="reset">Reset</button>
 
   <Board :board="chessboard" v-model:source="startMove" v-model:destination="endMove"/>
-
+ -->
   <!-- Captured Black Pieces -->
-  <div class="captured-pieces">
+ <!--  <div class="captured-pieces">
       <h2>Captured Black Pieces</h2>
       <ul>
         <li v-for="(piece, index) in capturedBlack" :key="index">
           {{ piece }}
         </li>
       </ul>
-  </div>
+  </div> -->
   
   <!-- Captured White Pieces -->
-    <div class="captured-pieces">
+  <!--   <div class="captured-pieces">
       <h2>Captured White Pieces</h2>
       <ul>
         <li v-for="(piece, index) in capturedWhite" :key="index">
           {{ piece }}
         </li>
       </ul>
-    </div>
+    </div> -->
 </template>
