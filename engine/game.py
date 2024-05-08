@@ -4,9 +4,7 @@ import json
 
 class Game:
     def __init__(self):
-        self.websocket = {}
-        self.players = {}
-        self.config = {}
+        self.connections = set()
         self.moves = []
         self.board = {}
         self.turn = -1
@@ -18,21 +16,26 @@ class Game:
         self.turn += 1
 
     async def server(self):
-        async with serve(self.websocket_handler, "0.0.0.0", 8765):
+        async with serve(self.handler, "0.0.0.0", 8765):
             await asyncio.Future()  # run forever
 
-    async def websocket_handler(self, websocket):
-        self.websocket = websocket
-        async for message in websocket:
-            await self.update(websocket, self.on_message(json.loads(message)))
+    async def handler(self, websocket):
+        self.connections.add(websocket)
+        try:
+            async for message in websocket:
+                response = await self.run_callback(json.loads(message))
+                await self.update(response)
+        finally:
+            self.connections.remove(websocket)
 
-    def on_message(self, message):
+    async def run_callback(self, message):
         if type(message) is dict:
             for key, value in message.items():
                 return self.messages[key](value)
         
-    async def update(self, websocket, message):
-        await websocket.send(message)
+    async def update(self, message):
+        for websocket in self.connections:
+            await websocket.send(message)
 
     def add_callback(self, message, callback):
         self.messages[message] = callback
