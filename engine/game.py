@@ -1,15 +1,15 @@
 import asyncio
 from websockets.server import serve
 import json
+import queue
 
 class Game:
     def __init__(self):
         self.connections = set()
-        self.moves = []
-        self.board = {}
-        self.turn = -1
-        self.chats = []
-        self.messages = {}
+        self.players = set()
+        self.state = dict()
+        self.callbacks = dict()
+        self.mq = queue.Queue()
 
     def record_move(self, move):
         self.moves.append(move)
@@ -17,29 +17,39 @@ class Game:
 
     async def server(self):
         async with serve(self.handler, "0.0.0.0", 8765):
-            await asyncio.Future()  # run forever
+            await self.producer()
 
     async def handler(self, websocket):
         self.connections.add(websocket)
         try:
             async for message in websocket:
-                response = await self.run_callback(json.loads(message))
-                await self.update(response)
+                await self.middleware(message)
         finally:
             self.connections.remove(websocket)
 
-    async def run_callback(self, message):
-        if type(message) is dict:
-            for key, value in message.items():
-                return self.messages[key](value)
-        
-    async def update(self, message):
-        for websocket in self.connections:
-            await websocket.send(message)
+    async def producer(self):
+        while True:
+            try:
+                msg = self.mq.get(block=False)
+                self.state.update(msg)
+                for websocket in self.connections:
+                    await websocket.send(json.dumps(msg))
+                self.mq.task_done()
+            except queue.Empty:
+                await asyncio.sleep(0.2)
 
-    def add_callback(self, message, callback):
-        self.messages[message] = callback
+    async def middleware(self, message):
+        msg = json.loads(message)
+        for path in msg:
+            if self.callbacks[path]:
+                self.callbacks[path](msg[path])
+
+    def add_callback(self, path, callback):
+        self.callbacks[path] = callback
+    
         
+    def update(self, mutation):
+        self.mq.put(mutation)
 	
     
 
