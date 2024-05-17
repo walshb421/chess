@@ -5,7 +5,6 @@ import Board from './components/Board.vue';
 import Piece from './components/Piece.vue';
 import { useChess } from './composables/chess.js';
 
-
 const turn = ref(-1);
 
 
@@ -16,8 +15,8 @@ const start_game = () => {
   turn.value = 0;
 }
 
-
-const {state, reset} = useChess();
+const { captured_black, captured_white, connect, reset} = useChess();
+const connection = connect();
 
 </script>
 
@@ -26,16 +25,16 @@ const {state, reset} = useChess();
   <div v-else>
      <h1>Example Chess App</h1>
   
-   <p>Status: {{ state.connection }}</p>
+  <p>Status: {{ connection }}</p>
   <button @click="reset()">Reset</button>
 
-  <Board :board="state.board.value" v-model:source="state.source" v-model:destination="state.destination"/>
+  <Board />
    
   <!-- Captured Black Pieces -->
   
   <h2>Captured Black Pieces</h2>
   <div class="captured-pieces">
-      <Piece v-for="(piece, index) in state.captured_black"
+      <Piece v-for="(piece, index) in captured_black"
           :piece="piece"
           class="board-piece"
       />
@@ -46,7 +45,7 @@ const {state, reset} = useChess();
     
   <h2>Captured White Pieces</h2>
   <div class="captured-pieces">
-      <Piece v-for="(piece, index) in state.captured_white"
+      <Piece v-for="(piece, index) in captured_white"
           :piece="piece"
           class="board-piece"
       />

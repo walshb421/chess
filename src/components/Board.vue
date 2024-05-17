@@ -1,29 +1,29 @@
 <script setup>
+import { useChess } from '@/composables/chess.js';
 import Piece from './Piece.vue';
+import { ref } from 'vue';
 
 
-const source = defineModel('source');
-const destination = defineModel('destination');
-var counter = 0;
+const { board, move } = useChess();
 
-const props = defineProps(['board']);
+const source = ref(null);
+const destination = ref(null);
 
 const horizontal = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
-
-function click_board(letter, number) {
-    if(counter == 0 ) {
-        if(props.board[letter + number] != '.') {
-            source.value = letter + number;
-            destination.value = null;
-            counter++
-        }
-        
+let count = 0;
+function click_board(square) {
+    if(!count) {
+        source.value = square;
+        count++;
     }
     else {
-        destination.value = letter + number;
-        counter = 0;
+        destination.value = square;
+        move(source.value, destination.value);
+        source.value = null;
+        destination.value = null;
+        count = 0;
     }
 }
 
@@ -50,13 +50,13 @@ function click_board(letter, number) {
                 v-for="letter in horizontal" 
                 class="board-square"
                 :class="{'selected': source == (letter + num) || destination == (letter + num)}"
-                @click="click_board(letter, num)"
+                @click="click_board(letter + num)"
             >
 
                 <!-- Logic For Pieces -->
                 <Piece
-                    v-if="props.board[letter + num] != '.'"
-                    :piece="props.board[letter + num]"
+                    v-if="board[letter + num] != '.'"
+                    :piece="board[letter + num]"
                     class="board-piece"
                 />
                 <p class="board-square-label">{{ letter + num }}</p>
