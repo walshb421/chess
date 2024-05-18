@@ -47,6 +47,7 @@ export function useChess() {
     board,
     captured_white,
     captured_black,
+    status,
     connect,
     move, 
     reset
