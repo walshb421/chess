@@ -1,5 +1,9 @@
 <script setup>
 import Piece from './Piece.vue';
+console.log(window.innerHeight)
+console.log(window.outerHeight)
+console.log(window.innerWidth)
+console.log(window.outerWidth)
 </script>
 <template>
 <div class="horizontal-bars">
@@ -12,6 +16,7 @@ import Piece from './Piece.vue';
 <div class="veritcal-bar-2"></div>
 </div>
 
+<div class="splash-content">
 <div>
 <h1 class="welcome">We<span class="hidden">l</span>come to chess</h1>
 </div>
@@ -20,11 +25,13 @@ import Piece from './Piece.vue';
 </Piece>
 </div>
 
+<div class="button-1">
 <div>
 <a class="start">Start a game</a>
 </div>
 
 <div class="button-start">
+</div>
 </div>
 
 <div>
@@ -32,5 +39,6 @@ import Piece from './Piece.vue';
 </div>
 
 <div class="button-settings"></div>
+</div>
 
 </template>

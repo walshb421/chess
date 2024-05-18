@@ -1,6 +1,6 @@
 @import './base.css';
 
-.board {
+/* .board {
   width: 860px;
   height: 860px;
 }
@@ -114,51 +114,50 @@
         margin-top: 5px;
         height: 40px;
     }
-}
+} */
 
-
+html, body {margin: 0; height: 100%; overflow: hidden}
 
 .horizontal-bar-1 {
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 1920px;
-  height: 100px;
+  width: 100%;
+  height: 10%;
   background-color: var(--bb-dark2);
 }
 .horizontal-bar-2 {
   position: absolute;
-  top: 100px;
+  top: 10%;
   left: 0px;
-  width: 1920px;
-  height: 75px;
+  width: 100%;
+  height: 12%;
   background-color: #8BA1C3;
 }
 
-.veritcal-bar-1 {
+.vertical-bars div {
   position: absolute;
   top: 0px;
-  left: 100px;
   width: 25px;
-  height: 1080px;
+  height: 100%;
   background-color: var(--bb-white);
+}
+.veritcal-bar-1 {
+  left: 100px;
 }
 
 .veritcal-bar-2 {
-  position: absolute;
-  top: 0px;
   left: 225px;
-  width: 25px;
-  height: 1080px;
-  background-color: var(--bb-white);
 }
+
 
 .welcome {
   position: absolute;
-  top: 717px;
-  left: 416px;
+  top: 60%;
+  left: 300px;
+  height: 178px;
   text-align: right;
-  font: normal normal 900 150px/178px 'Rubik';
+  font: normal normal 900 100px 'Rubik';
   letter-spacing: 0px;
   color: var(--bb-light2);
 }
@@ -166,10 +165,10 @@
 
 .start{
   position: absolute;
-  top: 895px;
-  left: 446px;
+  top: 85%;
+  left: 330px;
   text-align: right;
-  font: normal normal 900 75px/89px 'Rubik';
+  font: normal normal 900 45px/60px 'Rubik';
   letter-spacing: 0px;
   color: #C3D2EA;
   z-index: 1;
@@ -177,10 +176,10 @@
 
 .button-start {
   position: absolute;
-  top: 895px;
-  left: 416px;
-  width: 556px;
-  height: 89px;
+  top: 85%;
+  left: 300px;
+  width: 25%;
+  height: 60px;
   background-color: var(--bb-white) 0% 0% no-repeat padding-box;
   background: #F2F2F2 0% 0% no-repeat padding-box;
   border: 1px solid var(--bb-white);
@@ -190,10 +189,10 @@
 
 .settings {
   position: absolute;
-  top: 895px;
-  left: 1447px;
+  top: 85%;
+  left: 910px;
   text-align: right;
-  font: normal normal 900 75px/89px 'Rubik';
+  font: normal normal 900 45px/60px 'Rubik';
   letter-spacing: 0px;
   color: #C3D2EA;
   z-index: 1;
@@ -201,10 +200,10 @@
 
 .button-settings {
   position: absolute;
-  top: 895px;
-  left: 1422px;
-  width: 398px;
-  height: 89px;
+  top: 85%;
+  left: 880px;
+  width: 25%;
+  height: 60px;
   background-color: var(--bb-white) 0% 0% no-repeat padding-box;
   background: #F2F2F2 0% 0% no-repeat padding-box;
   border: 1px solid var(--bb-white);
@@ -220,9 +219,9 @@
 
 .logo-pawn {
   position: fixed;
-  top: 750px;
-  left: 634px;
-  width: 51px;
-  height: 107px;
+  top: 68.5%;
+  left: 451px;
+  width: 40px;
   fill: var(--bb-light2);
 }
+
