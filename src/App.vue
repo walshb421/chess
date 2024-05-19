@@ -17,6 +17,8 @@ const capturedWhite = ref([]);
 const capturedBlack = ref([]);
 const turn = ref(-1);
 
+
+
 watch(data, (newData) => {
   // When data changes, update game info
   const parsedData = JSON.parse(newData)
@@ -40,7 +42,15 @@ const sendMove = () => {
 
 }
 
-const reset = () => send(JSON.stringify({"reset": {}}))
+
+const start_game = () => {
+  turn.value = 0;
+}
+
+const reset = () => {
+  send(JSON.stringify({"reset": {}}))
+  turn.value = -1;
+}
 
 watch(endMove, (square) => {
   if(square) {
@@ -55,7 +65,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Splash v-if="turn < 0"/>
+  <Splash v-if="turn < 0" :start="start_game"/>
   <div v-else>
      <h1>Example Chess App</h1>
   

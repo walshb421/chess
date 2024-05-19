@@ -1,6 +1,6 @@
 <script setup>
 import Piece from './Piece.vue';
-
+const props = defineProps(['start']);
 </script>
 <template>
 <div class="horizontal-bars">
@@ -22,7 +22,7 @@ import Piece from './Piece.vue';
     </Piece>
 </div>
 
-<div class="button-join">
+<div @click="start()" class="button-join">
         <a class="join">Join a game</a>
 </div>
 
