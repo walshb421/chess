@@ -2,6 +2,7 @@
 
 import { ref, watch, onMounted } from 'vue';
 import { useWebSocket } from '@vueuse/core'
+
 import Board from './components/Board.vue';
 import Splash from '@/components/Splash.vue';
 
@@ -14,6 +15,7 @@ const endMove = ref('');
 const chessboard = ref(null);
 const capturedWhite = ref([]);
 const capturedBlack = ref([]);
+const turn = ref(-1);
 
 watch(data, (newData) => {
   // When data changes, update game info
@@ -53,34 +55,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <Splash>
-    
-  </Splash>
- <!--  <h1>Example Chess App</h1>
+  <Splash v-if="turn < 0"/>
+  <div v-else>
+     <h1>Example Chess App</h1>
   
   <p>Status: {{ status }}</p>
 
   <button @click="reset">Reset</button>
 
   <Board :board="chessboard" v-model:source="startMove" v-model:destination="endMove"/>
- -->
+
   <!-- Captured Black Pieces -->
- <!--  <div class="captured-pieces">
+  <div class="captured-pieces">
       <h2>Captured Black Pieces</h2>
       <ul>
         <li v-for="(piece, index) in capturedBlack" :key="index">
           {{ piece }}
         </li>
       </ul>
-  </div> -->
+  </div>
   
   <!-- Captured White Pieces -->
-  <!--   <div class="captured-pieces">
+    <div class="captured-pieces">
       <h2>Captured White Pieces</h2>
       <ul>
         <li v-for="(piece, index) in capturedWhite" :key="index">
           {{ piece }}
         </li>
       </ul>
-    </div> -->
+    </div> 
+
+  </div>
+
 </template>
