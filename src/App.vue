@@ -2,7 +2,9 @@
 
 import { ref, watch, onMounted } from 'vue';
 import { useWebSocket } from '@vueuse/core'
+
 import Board from './components/Board.vue';
+import Splash from '@/components/Splash.vue';
 
 
 const { status, data, send, open, close } = useWebSocket('ws://' + window.location.hostname + ':9090');
@@ -13,6 +15,9 @@ const endMove = ref('');
 const chessboard = ref(null);
 const capturedWhite = ref([]);
 const capturedBlack = ref([]);
+const turn = ref(-1);
+
+
 
 watch(data, (newData) => {
   // When data changes, update game info
@@ -37,7 +42,15 @@ const sendMove = () => {
 
 }
 
-const reset = () => send(JSON.stringify({"reset": {}}))
+
+const start_game = () => {
+  turn.value = 0;
+}
+
+const reset = () => {
+  send(JSON.stringify({"reset": {}}))
+  turn.value = -1;
+}
 
 watch(endMove, (square) => {
   if(square) {
@@ -52,7 +65,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>Example Chess App</h1>
+  <Splash v-if="turn < 0" :start="start_game"/>
+  <div v-else>
+     <h1>Example Chess App</h1>
   
   <p>Status: {{ status }}</p>
 
@@ -78,5 +93,8 @@ onMounted(() => {
           {{ piece }}
         </li>
       </ul>
-    </div>
+    </div> 
+
+  </div>
+
 </template>
