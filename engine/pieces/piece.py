@@ -11,7 +11,7 @@ class Piece:
     def capture(self):
         self.is_captured = True
 
-    def generate_moves(self, board, moves, turn):
+    def generate_moves(self, board, moves, turn, flags):
         return []
 
     def piece_to_dict(self):

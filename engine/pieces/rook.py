@@ -1,11 +1,11 @@
-from piece import Piece
+from .piece import Piece
 from move import Move
 
 class Rook(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Rook', position)
 
-	def generate_moves(self, board, moves, turn):
+	def generate_moves(self, board, moves, turn, flags):
 		possible_moves = []
 		start_row, start_col = self.position
 

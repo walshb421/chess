@@ -1,11 +1,11 @@
-from piece import Piece
+from .piece import Piece
 from move import Move
 
 class Knight(Piece):
 	def __init__(self, color, position):
 		super().__init__(color, 'Knight', position)
 
-	def generate_moves(self, board, moves, turn):
+	def generate_moves(self, board, moves, turn, flags):
 		possible_moves = []
 		start_row, start_col = self.position
 
@@ -22,5 +22,7 @@ class Knight(Piece):
 				# If the destination has a enemy then we can capture it
 				elif board[end_row][end_col].color != self.color:
 					possible_moves.append(Move(self, (start_row, start_col), (end_row, end_col)))
+
+		
 
 		return possible_moves
