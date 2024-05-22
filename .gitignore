@@ -30,4 +30,4 @@ coverage
 *.tsbuildinfo
 
 # Python Caches
-*/__pycache__/*
+**/__pycache__/
