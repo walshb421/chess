@@ -66,9 +66,7 @@
   background-color: var(--dark-square);
   color: var(--light-square);
 }
-.piece {
 
-}
 .board .piece {
   display: block;
   margin: auto;
@@ -84,6 +82,21 @@
 .light {
     fill: var(--light-piece);
     stroke-width: 0px;
+}
+
+.captured-pieces {
+  display: flex;
+}
+
+.jail {
+  display: flex;
+}
+.jail .piece {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 75px;
 }
 
 
@@ -231,13 +244,4 @@
   width: 38px;
   fill: var(--bb-light2);
   z-index: 1;
-}
-
-
-@media screen and (max-width: 703px) {
-
-}
-
-@media screen and (min-width: 1150px) {
-
 }

@@ -16,7 +16,7 @@ class ChessBoard(Game):
 	def __init__(self):
 		super().__init__()
 		self.reset()
-		self.add_callback("move", self.move_piece)
+		self.add_callback("move", lambda object : self.move_piece(object))
 		self.add_callback("connect", lambda object : self.game_to_json())
 		self.add_callback("reset", lambda object : self.reset())
 
@@ -90,8 +90,8 @@ class ChessBoard(Game):
 				else:
 					board_obj[key] = "."
 
-		captured_white = [str(piece) for piece in self.captured_whites]
-		captured_black = [str(piece) for piece in self.captured_blacks]
+		captured_white = [piece.piece_to_dict() for piece in self.captured_whites]
+		captured_black = [piece.piece_to_dict() for piece in self.captured_blacks]
 
 		# Create a dictionary to hold all game data
 		game_state = {
@@ -100,7 +100,7 @@ class ChessBoard(Game):
 			'captured_black': captured_black
 		}
 
-		return json.dumps(game_state)
+		self.update(game_state)
 	
 	# Checks if a piece can legally be moved to the square the user has requested
 	def can_move_piece(self, start_pos, end_pos):
