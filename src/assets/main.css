@@ -236,12 +236,3 @@
   fill: var(--bb-light2);
   z-index: 1;
 }
-
-
-@media screen and (max-width: 703px) {
-
-}
-
-@media screen and (min-width: 1150px) {
-
-}

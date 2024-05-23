@@ -12,10 +12,6 @@ import { useChess } from '@/composables/chess.js';
 
 const turn = ref(-1);
 
-
-
-
-
 const start_game = () => {
   turn.value = 0;
 }
