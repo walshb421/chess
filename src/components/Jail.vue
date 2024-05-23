@@ -9,10 +9,11 @@ const { captured_black, captured_white } = useChess();
 
 <h2>Jail</h2>
 <div v-for="team in [captured_white, captured_black]" class="captured-pieces">
-    <Piece v-for="piece in team"
-        :piece="piece"
-        class="board-piece"
-    /> 
+    <div class="jail">
+        <Piece v-for="piece in team"
+            :piece="piece"
+        /> 
+    </div>
 </div>
 
 </template>

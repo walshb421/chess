@@ -66,10 +66,9 @@
   background-color: var(--dark-square);
   color: var(--light-square);
 }
-.piece {
 
-}
-.board .piece {
+.board .piece,
+.jail .piece {
   display: block;
   margin: auto;
   margin-top: 10px;
@@ -89,6 +88,7 @@
 .captured-pieces {
   display: flex;
 }
+
 
 
 @media (max-width: 1200px) {
