@@ -67,8 +67,7 @@
   color: var(--light-square);
 }
 
-.board .piece,
-.jail .piece {
+.board .piece {
   display: block;
   margin: auto;
   margin-top: 10px;
@@ -89,6 +88,16 @@
   display: flex;
 }
 
+.jail {
+  display: flex;
+}
+.jail .piece {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 75px;
+}
 
 
 @media (max-width: 1200px) {
