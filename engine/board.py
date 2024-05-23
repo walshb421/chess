@@ -1,6 +1,12 @@
 # Acts as the board/game 
 from game import Game
-from pieces import Pawn, Rook, Bishop, Knight, Queen, King
+from pieces.pawn import Pawn
+from pieces.rook import Rook
+from pieces.bishop import Bishop
+from pieces.knight import Knight
+from pieces.queen import Queen
+from pieces.king import King
+from move import Move
 import json
 
 columns = ["a", "b", "c", "d", "e", "f", "g", "h"]
@@ -18,9 +24,16 @@ class ChessBoard(Game):
 		self.turn = -1
 		self.moves = []
 		self.board = self.create_starting_board()
+		self.turn += 1
 		self.captured_whites = []
 		self.captured_blacks = []
 
+		self.white_king_moved = False
+		self.black_king_moved = False
+		self.white_rook_a_moved = False
+		self.white_rook_h_moved = False
+		self.black_rook_a_moved = False
+		self.black_rook_h_moved = False
 		return self.game_to_json()
 
 	def create_starting_board(self):
@@ -42,14 +55,12 @@ class ChessBoard(Game):
 		# Create Knights
 		board[0][1] = Knight('dark', (0, 1))
 		board[0][6] = Knight('dark', (0, 6))
-
 		board[7][1] = Knight('light', (7, 1))
 		board[7][6] = Knight('light', (7, 6))
 
 		# Create Bishops
 		board[0][2] = Bishop('dark', (0, 2))
 		board[0][5] = Bishop('dark', (0, 5))
-
 		board[7][2] = Bishop('light', (7, 2))
 		board[7][5] = Bishop('light', (7, 5))
 
@@ -96,36 +107,178 @@ class ChessBoard(Game):
 		# Convert chess moves to coordinates
 		start_row, start_col = self.convert_to_index(start_pos)
 		end_row, end_col = self.convert_to_index(end_pos)
-
-		# Validate the move
-		if (self.board[start_row][start_col] != None): # If space to validate isnt None
-			if (self.board[start_row][start_col].validate_Move(start_row, start_col, end_row, end_col, self.board)):
-				return True
+		piece = self.board[start_row][start_col]
+		# if piece exists, find its possible moves and see if that move is 
+		if piece:
+			possible_moves = piece.generate_moves(self.board, self.moves, self.turn, self.get_castling_flags())
+			for move in possible_moves:
+				if move.dst == (end_row, end_col):
+					return self.validate_move(move);
+		return {'valid': False, 'special': None}
+	
+	def validate_move(self, move):
+		start_row, start_col = move.src
+		end_row, end_col = move.dst
+		if move.special == 'en_passant':
+			if self.en_passant_check(move.piece, start_row, start_col, end_row, end_col):
+				return {'valid': True, 'special': 'en_passant'}
+		if move.special == 'castling':
+			if self.castling_check(move.piece, start_row, start_col, end_row, end_col):
+				return {'valid': True, 'special': 'castling'}
+		return {'valid': True, 'special': None}
+	
+	def en_passant_check(self, pawn, start_row, start_col, end_row, end_col):
+		# Check if the piece is a pawn
+		if pawn.type != 'Pawn':
+			return False
+		# Check if the pawn is captured or at the correct position
+		if pawn.is_captured or pawn.position != (start_row, start_col):
+			return False
+		# Main logic for en passant
+		if self.turn > 0:
+			last_move = self.moves[self.turn - 1]
+			last_start_row, last_start_col = last_move.src
+			last_end_row, last_end_col = last_move.dst
+			if abs(last_start_row - last_end_row) == 2 and abs(start_col - last_end_col) == 1:
+				if pawn.color == 'light' and start_row == 3 and end_row == 2 and end_col == last_end_col:
+					return True
+				elif pawn.color == 'dark' and start_row == 4 and end_row == 5 and end_col == last_end_col:
+					return True
+		
 		return False
+	
+	def castling_check(self, king, start_row, start_col, end_row, end_col):
+		# Check if the king has moved before
+		if king.type != 'King':
+			return False
+		# Check if the king has moved before or if the rooks have moved before 
+		if king.color == 'light':
+			if self.white_king_moved:
+				return False
+			# Check moving left or right and if the rook has moved
+			if end_col - start_col == 2 and self.white_rook_h_moved:
+				return False
+			if end_col - start_col == -2 and self.white_rook_a_moved:
+				return False
+		else:
+			# Check if the black king has moved before
+			if self.black_king_moved:
+				return False
+			# Check if the black rooks have moved before
+			# Check moving left or right and if the rook has moved
+			if end_col - start_col == 2 and self.black_rook_h_moved:
+				return False
+			if end_col - start_col == -2 and self.black_rook_a_moved:
+				return False
+
+		# Check if the path between the king and the rook is clear
+		if end_col - start_col == 2:  # Kingside castling
+			for col in range(start_col + 1, end_col):
+				if self.board[start_row][col] is not None:
+					return False
+		elif end_col - start_col == -2:  # Queenside castling
+			for col in range(end_col + 1, start_col):
+				if self.board[start_row][col] is not None:
+					return False
+
+		# TODO: Check if the king is in check, passes through check, or ends up in check
+
+		return True
+
+	def get_castling_flags(self):
+		return {
+			'white_king_moved': self.white_king_moved,
+			'black_king_moved': self.black_king_moved,
+			'white_rook_a_moved': self.white_rook_a_moved,
+			'white_rook_h_moved': self.white_rook_h_moved,
+			'black_rook_a_moved': self.black_rook_a_moved,
+			'black_rook_h_moved': self.black_rook_h_moved
+	}
 
 	# Moves a piece and sees if it has captured anything in the process
 	def move_piece(self, move):
 		start_pos = move['source']
 		end_pos = move['destination']
-		if(self.can_move_piece(start_pos, end_pos)):
+		move_info = self.can_move_piece(start_pos, end_pos)
+
+		if(move_info['valid']):
 			# Convert chess moves to coordinates
 			start_row, start_col = self.convert_to_index(start_pos)
 			end_row, end_col = self.convert_to_index(end_pos)
+			moving_piece = self.board[start_row][start_col]
 
-			# See if there was a piece there
-			if self.board[end_row][end_col] is not None:
-				captured_piece = self.board[end_row][end_col]
-				captured_piece.capture()
+			# Create a Move object
+			move_obj = Move(moving_piece, (start_row, start_col), (end_row, end_col), move_info['special'])
+			self.record_move(move_obj)
 
-				if captured_piece.color == 'white':
-					self.captured_whites.append(captured_piece)
+			# Set flags if a king or rook is moved
+			if moving_piece.type == 'King':
+				if moving_piece.color == 'light':
+					self.white_king_moved = True
 				else:
-					self.captured_blacks.append(captured_piece)
+					self.black_king_moved = True
+			elif moving_piece.type == 'Rook':
+				if start_col == 0:
+					if moving_piece.color == 'light':
+						self.white_rook_a_moved = True
+					else:
+						self.black_rook_a_moved = True
+				elif start_col == 7:
+					if moving_piece.color == 'light':
+						self.white_rook_h_moved = True
+					else:
+						self.black_rook_h_moved = True
 
-			self.board[end_row][end_col] = self.board[start_row][start_col]
+			# Check if the move is en passant
+			if move_obj.special == 'en_passant':
+				if moving_piece.color == 'light':
+					captured_row = end_row + 1
+				else:
+					captured_row = end_row - 1
+				captured_col = end_col
+				captured_piece = self.board[captured_row][captured_col]
+				self.capture_piece(captured_piece)
+				self.board[captured_row][captured_col] = None
+
+			# Check if the move is castling
+			elif move_obj.special == 'castling':
+				# Check Kingside castling
+				if end_col - start_col == 2:
+					rook_start_col = 7
+					rook_end_col = end_col - 1
+				else:  # Queenside castling
+					rook_start_col = 0
+					rook_end_col = end_col + 1
+
+				rook = self.board[start_row][rook_start_col]
+				self.board[start_row][rook_end_col] = rook
+				self.board[start_row][rook_start_col] = None
+
+				# Update the rook's position
+				rook.position = (start_row, rook_end_col)
+
+			else: # If the move is not special, then we try to capture a piece if not then move
+				captured_piece = self.board[end_row][end_col]
+				if captured_piece:
+					self.capture_piece(captured_piece)
+
+			# Move the piece to the new location
+			self.board[end_row][end_col] = moving_piece
+			# Remove the piece from the old location
 			self.board[start_row][start_col] = None
+
+			# Update the piece's position
+			moving_piece.position = (end_row, end_col)	
+
 		return self.game_to_json()
-	
+
+	def capture_piece(self, piece):
+		piece.capture()
+		if piece.color == 'light':
+			self.captured_whites.append(piece)
+		else:
+			self.captured_blacks.append(piece)
+
 
 	# we only use chess notation here bruv
 	def convert_to_index(self, position):
