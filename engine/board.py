@@ -9,7 +9,7 @@ from pieces.king import King
 from move import Move
 import json
 
-columns = ["a", "b", "c", "d", "e", "f", "g", "h"]
+columns = ["A", "B", "C", "D", "E", "F", "G", "H"]
 rows = ["8", "7", "6", "5", "4", "3", "2", "1"]
 
 class ChessBoard(Game):
@@ -283,6 +283,6 @@ class ChessBoard(Game):
 	# we only use chess notation here bruv
 	def convert_to_index(self, position):
 		column, row = position
-		col_idx = ord(column) - ord('a')
+		col_idx = ord(column) - ord('A')
 		row_idx = 8 - int(row)
 		return row_idx, col_idx
