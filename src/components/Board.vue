@@ -9,7 +9,7 @@ const { board, move } = useChess();
 const source = ref(null);
 const destination = ref(null);
 
-const horizontal = ["a", "b", "c", "d", "e", "f", "g", "h"];
+const horizontal = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
 let count = 0;
