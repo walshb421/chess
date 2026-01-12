@@ -9,6 +9,7 @@ from pieces.king import King
 from move import Move
 from fixtures import POSITIONS, CATEGORIES, get_fixture, get_all_fixtures
 import json
+import copy
 
 columns = ["A", "B", "C", "D", "E", "F", "G", "H"]
 rows = ["8", "7", "6", "5", "4", "3", "2", "1"]
@@ -272,16 +273,184 @@ class ChessBoard(Game):
         captured_white = [piece.piece_to_dict() for piece in self.captured_whites]
         captured_black = [piece.piece_to_dict() for piece in self.captured_blacks]
 
+        # Determine current player's color
+        current_color = 'light' if self.turn % 2 == 0 else 'dark'
+
         # Create a dictionary to hold all game data
         game_state = {
             'board': board_obj,
             'captured_white': captured_white,
             'captured_black': captured_black,
             'turn': self.turn,
-            'fen': self.to_fen()
+            'fen': self.to_fen(),
+            'in_check': self.is_in_check(current_color)
         }
 
         self.update(game_state)
+
+    # ==================== CHECK DETECTION METHODS ====================
+
+    def get_king_position(self, color):
+        """
+        Find the position of the king of the specified color.
+        
+        Args:
+            color: 'light' or 'dark'
+            
+        Returns:
+            tuple: (row, col) position of the king, or None if not found
+        """
+        for row in range(8):
+            for col in range(8):
+                piece = self.board[row][col]
+                if piece and piece.type == 'King' and piece.color == color:
+                    return (row, col)
+        return None
+
+    def is_square_attacked(self, square, by_color):
+        """
+        Check if a square is attacked by any piece of the specified color.
+        
+        Args:
+            square: tuple (row, col) of the square to check
+            by_color: color of the attacking pieces ('light' or 'dark')
+            
+        Returns:
+            bool: True if the square is attacked, False otherwise
+        """
+        target_row, target_col = square
+        
+        # Check attacks from pawns
+        pawn_direction = 1 if by_color == 'light' else -1
+        for col_offset in [-1, 1]:
+            check_row = target_row + pawn_direction
+            check_col = target_col + col_offset
+            if 0 <= check_row < 8 and 0 <= check_col < 8:
+                piece = self.board[check_row][check_col]
+                if piece and piece.type == 'Pawn' and piece.color == by_color:
+                    return True
+        
+        # Check attacks from knights
+        knight_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+        for dr, dc in knight_moves:
+            check_row, check_col = target_row + dr, target_col + dc
+            if 0 <= check_row < 8 and 0 <= check_col < 8:
+                piece = self.board[check_row][check_col]
+                if piece and piece.type == 'Knight' and piece.color == by_color:
+                    return True
+        
+        # Check attacks from king (for adjacent squares)
+        king_moves = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+        for dr, dc in king_moves:
+            check_row, check_col = target_row + dr, target_col + dc
+            if 0 <= check_row < 8 and 0 <= check_col < 8:
+                piece = self.board[check_row][check_col]
+                if piece and piece.type == 'King' and piece.color == by_color:
+                    return True
+        
+        # Check attacks from rooks and queens (straight lines)
+        straight_directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        for dr, dc in straight_directions:
+            for step in range(1, 8):
+                check_row = target_row + dr * step
+                check_col = target_col + dc * step
+                if not (0 <= check_row < 8 and 0 <= check_col < 8):
+                    break
+                piece = self.board[check_row][check_col]
+                if piece:
+                    if piece.color == by_color and piece.type in ['Rook', 'Queen']:
+                        return True
+                    break  # Blocked by a piece
+        
+        # Check attacks from bishops and queens (diagonal lines)
+        diagonal_directions = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+        for dr, dc in diagonal_directions:
+            for step in range(1, 8):
+                check_row = target_row + dr * step
+                check_col = target_col + dc * step
+                if not (0 <= check_row < 8 and 0 <= check_col < 8):
+                    break
+                piece = self.board[check_row][check_col]
+                if piece:
+                    if piece.color == by_color and piece.type in ['Bishop', 'Queen']:
+                        return True
+                    break  # Blocked by a piece
+        
+        return False
+
+    def is_in_check(self, color):
+        """
+        Check if the king of the specified color is in check.
+        
+        Args:
+            color: 'light' or 'dark'
+            
+        Returns:
+            bool: True if the king is in check, False otherwise
+        """
+        king_pos = self.get_king_position(color)
+        if king_pos is None:
+            return False
+        
+        opponent_color = 'dark' if color == 'light' else 'light'
+        return self.is_square_attacked(king_pos, opponent_color)
+
+    def would_be_in_check(self, move, color):
+        """
+        Check if making a move would leave the king in check.
+        Simulates the move on a copy of the board.
+        
+        Args:
+            move: Move object to simulate
+            color: color of the player making the move
+            
+        Returns:
+            bool: True if the move would leave the king in check, False otherwise
+        """
+        start_row, start_col = move.src
+        end_row, end_col = move.dst
+        
+        # Save the current state
+        original_start_piece = self.board[start_row][start_col]
+        original_end_piece = self.board[end_row][end_col]
+        
+        # Handle en passant capture
+        captured_en_passant_piece = None
+        captured_en_passant_pos = None
+        if move.special == 'en_passant':
+            if color == 'light':
+                captured_en_passant_pos = (end_row + 1, end_col)
+            else:
+                captured_en_passant_pos = (end_row - 1, end_col)
+            captured_en_passant_piece = self.board[captured_en_passant_pos[0]][captured_en_passant_pos[1]]
+            self.board[captured_en_passant_pos[0]][captured_en_passant_pos[1]] = None
+        
+        # Simulate the move
+        self.board[end_row][end_col] = original_start_piece
+        self.board[start_row][start_col] = None
+        
+        # Temporarily update piece position for king position lookup
+        if original_start_piece:
+            old_position = original_start_piece.position
+            original_start_piece.position = (end_row, end_col)
+        
+        # Check if the king is in check after the move
+        in_check = self.is_in_check(color)
+        
+        # Restore the original state
+        self.board[start_row][start_col] = original_start_piece
+        self.board[end_row][end_col] = original_end_piece
+        
+        if original_start_piece:
+            original_start_piece.position = old_position
+        
+        # Restore en passant captured piece
+        if captured_en_passant_pos:
+            self.board[captured_en_passant_pos[0]][captured_en_passant_pos[1]] = captured_en_passant_piece
+        
+        return in_check
+
+    # ==================== END CHECK DETECTION METHODS ====================
     
     # Checks if a piece can legally be moved to the square the user has requested
     def can_move_piece(self, start_pos, end_pos):
@@ -289,12 +458,19 @@ class ChessBoard(Game):
         start_row, start_col = self.convert_to_index(start_pos)
         end_row, end_col = self.convert_to_index(end_pos)
         piece = self.board[start_row][start_col]
-        # if piece exists, find its possible moves and see if that move is 
+        
+        # Determine the color of the current player
+        current_color = 'light' if self.turn % 2 == 0 else 'dark'
+        
+        # if piece exists, find its possible moves and see if that move is valid
         if piece:
             possible_moves = piece.generate_moves(self.board, self.moves, self.turn, self.get_castling_flags())
             for move in possible_moves:
                 if move.dst == (end_row, end_col):
-                    return self.validate_move(move);
+                    # Check if this move would leave the king in check
+                    if self.would_be_in_check(move, current_color):
+                        continue  # Skip this move as it's illegal
+                    return self.validate_move(move)
         return {'valid': False, 'special': None}
     
     def validate_move(self, move):
@@ -338,6 +514,11 @@ class ChessBoard(Game):
         # Check if the king has moved before
         if king.type != 'King':
             return False
+        
+        # Check if the king is currently in check - cannot castle out of check
+        if self.is_in_check(king.color):
+            return False
+        
         # Check if the king has moved before or if the rooks have moved before 
         if king.color == 'light':
             if self.white_king_moved:
@@ -368,7 +549,19 @@ class ChessBoard(Game):
                 if self.board[start_row][col] is not None:
                     return False
 
-        # TODO: Check if the king is in check, passes through check, or ends up in check
+        # Check if the king passes through check or ends up in check
+        opponent_color = 'dark' if king.color == 'light' else 'light'
+        
+        if end_col - start_col == 2:  # Kingside castling
+            # Check squares the king passes through (f1/f8) and ends on (g1/g8)
+            for col in [start_col + 1, start_col + 2]:
+                if self.is_square_attacked((start_row, col), opponent_color):
+                    return False
+        elif end_col - start_col == -2:  # Queenside castling
+            # Check squares the king passes through (d1/d8) and ends on (c1/c8)
+            for col in [start_col - 1, start_col - 2]:
+                if self.is_square_attacked((start_row, col), opponent_color):
+                    return False
 
         return True
 
