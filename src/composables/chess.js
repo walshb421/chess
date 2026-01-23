@@ -26,10 +26,10 @@ watch(data, (newData) => {
   if(parsedData.board) board.value = parsedData.board;
   if(parsedData.captured_black) captured_black.value = parsedData.captured_black;
   if(parsedData.captured_white) captured_white.value = parsedData.captured_white;
-  if(parsedData.turn \!== undefined) turn.value = parsedData.turn;
+  if(parsedData.turn !== undefined) turn.value = parsedData.turn;
   if(parsedData.fen) currentFen.value = parsedData.fen;
   if(parsedData.fixtures) fixtures.value = parsedData.fixtures;
-  if(parsedData.in_check \!== undefined) inCheck.value = parsedData.in_check;
+  if(parsedData.in_check !== undefined) inCheck.value = parsedData.in_check;
 })
 
 const move = (source, destination) => {
