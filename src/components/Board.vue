@@ -1,10 +1,10 @@
 <script setup>
 import { useChess } from '@/composables/chess.js';
 import Piece from './Piece.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 
-const { board, move } = useChess();
+const { board, move, inCheck } = useChess();
 
 const source = ref(null);
 const destination = ref(null);
@@ -25,6 +25,13 @@ function click_board(square) {
         destination.value = null;
         count = 0;
     }
+}
+
+function isKingInCheck(square) {
+    if (!inCheck.value) return false;
+    const piece = board.value[square];
+    if (piece === '.') return false;
+    return piece.type === 'King' && piece.team === inCheck.value;
 }
 
 </script>
@@ -49,7 +56,10 @@ function click_board(square) {
             <div 
                 v-for="letter in horizontal" 
                 class="board-square"
-                :class="{'selected': source == (letter + num) || destination == (letter + num)}"
+                :class="{
+                    'selected': source == (letter + num) || destination == (letter + num),
+                    'in-check': isKingInCheck(letter + num)
+                }"
                 @click="click_board(letter + num)"
             >
 

@@ -10,6 +10,7 @@ const captured_black = ref([]);
 const turn = ref(0);
 const currentFen = ref('');
 const fixtures = ref({ positions: {}, categories: {} });
+const inCheck = ref(null);
 
 const horizontal = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const vertical = ["8", "7", "6", "5", "4", "3", "2", "1"];
@@ -25,9 +26,10 @@ watch(data, (newData) => {
   if(parsedData.board) board.value = parsedData.board;
   if(parsedData.captured_black) captured_black.value = parsedData.captured_black;
   if(parsedData.captured_white) captured_white.value = parsedData.captured_white;
-  if(parsedData.turn !== undefined) turn.value = parsedData.turn;
+  if(parsedData.turn \!== undefined) turn.value = parsedData.turn;
   if(parsedData.fen) currentFen.value = parsedData.fen;
   if(parsedData.fixtures) fixtures.value = parsedData.fixtures;
+  if(parsedData.in_check \!== undefined) inCheck.value = parsedData.in_check;
 })
 
 const move = (source, destination) => {
@@ -67,6 +69,7 @@ export function useChess() {
     turn,
     currentFen,
     fixtures,
+    inCheck,
     status,
     connect,
     move, 
