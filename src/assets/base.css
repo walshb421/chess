@@ -21,8 +21,8 @@
   --color-text: var(--bb-dark1);
   --light-square: var(--bb-white);
   --dark-square: var(--bb-black);
-  --light-piece: var(--bb-light2);
-  --dark-piece: var(--bb-dark2);
+  --light-piece: #E8C87A;
+  --dark-piece: #1E3A5F;
 
   --section-gap: 160px;
 }
