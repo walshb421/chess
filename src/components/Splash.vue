@@ -1,5 +1,6 @@
 <script setup>
 import Piece from './Piece.vue';
+import Settings from './Settings.vue';
 const props = defineProps(['start']);
 </script>
 <template>
@@ -28,7 +29,10 @@ const props = defineProps(['start']);
 
 <div class="button-settings">
     <a class="settings">Settings</a>
+    <Settings />
 </div>
 </div>
+
+
 
 </template>
